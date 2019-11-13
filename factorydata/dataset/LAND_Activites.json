@@ -1,6 +1,7 @@
 {
-	"name": "LAND_ElevateActivites",
+	"name": "LAND_Activites",
 	"properties": {
+		"description": "Landing dataset containing consolidated activities from the datalake",
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage_LinkedService",
 			"type": "LinkedServiceReference"
@@ -10,6 +11,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "Landing",
 				"fileSystem": "fitness"
 			},
 			"columnDelimiter": ",",
