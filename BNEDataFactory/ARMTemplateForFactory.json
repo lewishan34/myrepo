@@ -104,7 +104,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/daniell@itsupportaltiscom.onmicrosoft.com/03-Data-Ingestion-Via-ADF/03-Data-Transformation",
+							"notebookPath": "/Users/daniell@itsupportaltiscom.onmicrosoft.com/03-Data-Ingestion-Via-ADF/includes",
 							"baseParameters": {
 								"accountName": "bnedatalake",
 								"accountKey": "dEoN+W5LxgFMrREnhU32Ur8QkWe8cIiPU/eypfKuwpGRYv8tKcpEzEueg7E9wJErJXAWXxfInskbsNIef1zMJA==",
