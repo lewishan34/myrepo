@@ -1,0 +1,105 @@
+{
+	"name": "ElevateActivities",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage_LinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "elevate_activities_export.2019.8.10-18.53.22.csv",
+				"folderPath": "Extracts",
+				"fileSystem": "fitness"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Type",
+				"type": "String"
+			},
+			{
+				"name": "Moving Time",
+				"type": "String"
+			},
+			{
+				"name": "Distance (km)",
+				"type": "String"
+			},
+			{
+				"name": "Elevation Gain (m)",
+				"type": "String"
+			},
+			{
+				"name": "Avg Moving Speed (kph)",
+				"type": "String"
+			},
+			{
+				"name": "Calories",
+				"type": "String"
+			},
+			{
+				"name": "Best 20min Speed (kph)",
+				"type": "String"
+			},
+			{
+				"name": "Avg HR (bpm)",
+				"type": "String"
+			},
+			{
+				"name": "Max HR (bpm)",
+				"type": "String"
+			},
+			{
+				"name": "HRSS / h",
+				"type": "String"
+			},
+			{
+				"name": "Best 20min HR (bpm)",
+				"type": "String"
+			},
+			{
+				"name": "Cadence Avg Moving (rpm or spm)",
+				"type": "String"
+			},
+			{
+				"name": "Avg Watts (w)",
+				"type": "String"
+			},
+			{
+				"name": "Weighted Power (w)",
+				"type": "String"
+			},
+			{
+				"name": "Weighted Power / Kilograms (w/kg)",
+				"type": "String"
+			},
+			{
+				"name": "Best 20min Power (w)",
+				"type": "String"
+			},
+			{
+				"name": "Athlete Settings",
+				"type": "String"
+			},
+			{
+				"name": "Delete",
+				"type": "String"
+			}
+		]
+	}
+}
