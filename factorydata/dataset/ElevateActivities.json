@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "elevate_activities_export.2019.8.10-18.53.22.csv",
 				"folderPath": "Extracts",
 				"fileSystem": "fitness"
 			},
