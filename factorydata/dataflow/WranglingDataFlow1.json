@@ -1,0 +1,32 @@
+{
+	"name": "WranglingDataFlow1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "ElevateActivities",
+					"script": "",
+					"dataset": {
+						"referenceName": "ElevateActivities",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				}
+			],
+			"sinks": [
+				{
+					"name": "Sink1",
+					"dataset": {
+						"referenceName": "LAND_Activites",
+						"type": "DatasetReference"
+					},
+					"script": "sink(input(\n\t\tDate as string,\n\t\tName as string,\n\t\tType as string,\n\t\t{Moving Time} as string,\n\t\t{Distance (km)} as string,\n\t\t{Elevation Gain (m)} as string,\n\t\t{Avg Moving Speed (kph)} as string,\n\t\tCalories as string,\n\t\t{Best 20min Speed (kph)} as string,\n\t\t{Avg HR (bpm)} as string,\n\t\t{Max HR (bpm)} as string,\n\t\t{HRSS / h} as string,\n\t\t{Best 20min HR (bpm)} as string,\n\t\t{Cadence Avg Moving (rpm or spm)} as string,\n\t\t{Avg Watts (w)} as string,\n\t\t{Weighted Power (w)} as string,\n\t\t{Weighted Power / Kilograms (w/kg)} as string,\n\t\t{Best 20min Power (w)} as string,\n\t\t{Athlete Settings} as string,\n\t\tDelete as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['ActivitiesHistory'],\n\tpartitionBy('hash', 1)) ~> Sink1"
+				}
+			],
+			"script": "section Section1; shared #\"ElevateActivities\" = let AdfDoc = Web.Contents(\"https://bnedatalake.dfs.core.windows.net/fitness/Extracts/elevate_activities_export.2019.11.14-10.50.56.csv?sv=2018-03-28&sig=Z2IbQxsBNKGpma84XksUPViVx6YcWV32jwgm%2B1NRR64%3D&spr=https&se=2019-11-15T01%3A47%3A09Z&srt=sco&ss=bf&sp=rwl\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]), TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName)) in TrimmedHeaders;shared UserQuery = let Source = #\"ElevateActivities\" in Source;"
+		}
+	}
+}

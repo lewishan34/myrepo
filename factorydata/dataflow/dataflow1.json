@@ -1,0 +1,31 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "LAND_Activites",
+						"type": "DatasetReference"
+					},
+					"name": "STAGEActivities"
+				},
+				{
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LAND_Activites",
+						"type": "DatasetReference"
+					},
+					"name": "LOADActivitiesToStage"
+				}
+			],
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tDate as string,\n\t\tName as string,\n\t\tType as string,\n\t\t{Moving Time} as string,\n\t\t{Distance (km)} as string,\n\t\t{Elevation Gain (m)} as string,\n\t\t{Avg Moving Speed (kph)} as string,\n\t\tCalories as string,\n\t\t{Best 20min Speed (kph)} as string,\n\t\t{Avg HR (bpm)} as string,\n\t\t{Max HR (bpm)} as string,\n\t\t{HRSS / h} as string,\n\t\t{Best 20min HR (bpm)} as string,\n\t\t{Cadence Avg Moving (rpm or spm)} as string,\n\t\t{Avg Watts (w)} as string,\n\t\t{Weighted Power (w)} as string,\n\t\t{Weighted Power / Kilograms (w/kg)} as string,\n\t\t{Best 20min Power (w)} as string,\n\t\t{Athlete Settings} as string,\n\t\tDelete as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> STAGEActivities\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nSTAGEActivities sink(input(\n\t\tDate as string,\n\t\tName as string,\n\t\tType as string,\n\t\t{Moving Time} as string,\n\t\t{Distance (km)} as string,\n\t\t{Elevation Gain (m)} as string,\n\t\t{Avg Moving Speed (kph)} as string,\n\t\tCalories as string,\n\t\t{Best 20min Speed (kph)} as string,\n\t\t{Avg HR (bpm)} as string,\n\t\t{Max HR (bpm)} as string,\n\t\t{HRSS / h} as string,\n\t\t{Best 20min HR (bpm)} as string,\n\t\t{Cadence Avg Moving (rpm or spm)} as string,\n\t\t{Avg Watts (w)} as string,\n\t\t{Weighted Power (w)} as string,\n\t\t{Weighted Power / Kilograms (w/kg)} as string,\n\t\t{Best 20min Power (w)} as string,\n\t\t{Athlete Settings} as string,\n\t\tDelete as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> LOADActivitiesToStage"
+		}
+	}
+}
