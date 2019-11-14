@@ -1,0 +1,12 @@
+{
+	"name": "STAGE_ActivitiesTransactions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureTableStorageLinkSvs",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureTable",
+		"schema": []
+	}
+}
