@@ -5,11 +5,17 @@
 		"factoryName": {
 			"value": "BNEDataFactory"
 		},
+		"AzureDataLakeStorage_LinkedService_accountKey": {
+			"value": ""
+		},
 		"AzureDatabricks_accessToken": {
 			"value": ""
 		},
 		"DestinationContainer_connectionString": {
 			"value": ""
+		},
+		"AzureDataLakeStorage_LinkedService_properties_typeProperties_url": {
+			"value": "https://bnedatalake.dfs.core.windows.net"
 		},
 		"PublicDataset_sasUri": {
 			"value": ""

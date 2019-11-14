@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "BNEDataFactory"
 		},
+		"AzureDataLakeStorage_LinkedService_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage_LinkedService'"
+		},
 		"AzureDatabricks_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks'"
@@ -14,6 +18,10 @@
 		"DestinationContainer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'DestinationContainer'"
+		},
+		"AzureDataLakeStorage_LinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bnedatalake.dfs.core.windows.net"
 		},
 		"PublicDataset_sasUri": {
 			"type": "secureString",
@@ -24,6 +32,23 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage_LinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage_LinkedService_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage_LinkedService_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -92,6 +117,225 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ElevateActivities')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_LinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Extracts",
+						"fileSystem": "fitness"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Moving Time",
+						"type": "String"
+					},
+					{
+						"name": "Distance (km)",
+						"type": "String"
+					},
+					{
+						"name": "Elevation Gain (m)",
+						"type": "String"
+					},
+					{
+						"name": "Avg Moving Speed (kph)",
+						"type": "String"
+					},
+					{
+						"name": "Calories",
+						"type": "String"
+					},
+					{
+						"name": "Best 20min Speed (kph)",
+						"type": "String"
+					},
+					{
+						"name": "Avg HR (bpm)",
+						"type": "String"
+					},
+					{
+						"name": "Max HR (bpm)",
+						"type": "String"
+					},
+					{
+						"name": "HRSS / h",
+						"type": "String"
+					},
+					{
+						"name": "Best 20min HR (bpm)",
+						"type": "String"
+					},
+					{
+						"name": "Cadence Avg Moving (rpm or spm)",
+						"type": "String"
+					},
+					{
+						"name": "Avg Watts (w)",
+						"type": "String"
+					},
+					{
+						"name": "Weighted Power (w)",
+						"type": "String"
+					},
+					{
+						"name": "Weighted Power / Kilograms (w/kg)",
+						"type": "String"
+					},
+					{
+						"name": "Best 20min Power (w)",
+						"type": "String"
+					},
+					{
+						"name": "Athlete Settings",
+						"type": "String"
+					},
+					{
+						"name": "Delete",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LAND_Activites')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Landing dataset containing consolidated activities from the datalake",
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_LinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Landing",
+						"fileSystem": "fitness"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Moving Time",
+						"type": "String"
+					},
+					{
+						"name": "Distance (km)",
+						"type": "String"
+					},
+					{
+						"name": "Elevation Gain (m)",
+						"type": "String"
+					},
+					{
+						"name": "Avg Moving Speed (kph)",
+						"type": "String"
+					},
+					{
+						"name": "Calories",
+						"type": "String"
+					},
+					{
+						"name": "Best 20min Speed (kph)",
+						"type": "String"
+					},
+					{
+						"name": "Avg HR (bpm)",
+						"type": "String"
+					},
+					{
+						"name": "Max HR (bpm)",
+						"type": "String"
+					},
+					{
+						"name": "HRSS / h",
+						"type": "String"
+					},
+					{
+						"name": "Best 20min HR (bpm)",
+						"type": "String"
+					},
+					{
+						"name": "Cadence Avg Moving (rpm or spm)",
+						"type": "String"
+					},
+					{
+						"name": "Avg Watts (w)",
+						"type": "String"
+					},
+					{
+						"name": "Weighted Power (w)",
+						"type": "String"
+					},
+					{
+						"name": "Weighted Power / Kilograms (w/kg)",
+						"type": "String"
+					},
+					{
+						"name": "Best 20min Power (w)",
+						"type": "String"
+					},
+					{
+						"name": "Athlete Settings",
+						"type": "String"
+					},
+					{
+						"name": "Delete",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataset_5yl')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -112,6 +356,279 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/PublicDataset')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ActivitiesPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyElevateActivities",
+						"description": "Copy Elevate Activities from bnedatalake fitness container",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "\"elevate*.csv\"",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Date",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Date",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Type",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Moving Time",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Moving Time",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Distance (km)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Distance (km)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Elevation Gain (m)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Elevation Gain (m)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Avg Moving Speed (kph)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Avg Moving Speed (kph)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Calories",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Calories",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Best 20min Speed (kph)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Best 20min Speed (kph)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Avg HR (bpm)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Avg HR (bpm)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Max HR (bpm)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Max HR (bpm)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "HRSS / h",
+											"type": "String"
+										},
+										"sink": {
+											"name": "HRSS / h",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Best 20min HR (bpm)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Best 20min HR (bpm)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Cadence Avg Moving (rpm or spm)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Cadence Avg Moving (rpm or spm)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Avg Watts (w)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Avg Watts (w)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Weighted Power (w)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Weighted Power (w)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Weighted Power / Kilograms (w/kg)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Weighted Power / Kilograms (w/kg)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Best 20min Power (w)",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Best 20min Power (w)",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Athlete Settings",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Athlete Settings",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Delete",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Delete",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ElevateActivities",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "LAND_Activites",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ElevateActivities')]",
+				"[concat(variables('factoryId'), '/datasets/LAND_Activites')]"
 			]
 		},
 		{
